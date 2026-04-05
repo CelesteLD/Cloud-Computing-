@@ -1,0 +1,40 @@
+# ── Node / React ─────────────────────────────────
+node_modules/
+build/
+.env
+.env.local
+.env.*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ── Python ───────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+
+# ── C++ binaries (compilados en el contenedor) ───
+backend/binaries/sum
+backend/binaries/sum_float
+backend/binaries/subtract_float
+backend/binaries/quotient
+backend/binaries/multiply
+backend/binaries/divide
+backend/binaries/matrix_add
+backend/binaries/matrix_multiply
+
+# ── Docker ───────────────────────────────────────
+.docker/
+
+# ── OS ───────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── IDEs ─────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
