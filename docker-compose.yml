@@ -3,7 +3,7 @@ version: "3.9"
 services:
   backend:
     build: ./backend
-    container_name: lab04-backend
+    container_name: lab05-backend
     ports:
       - "5001:5000"
     restart: unless-stopped
@@ -13,7 +13,7 @@ services:
       context: ./frontend
       args:
         REACT_APP_API_URL: http://localhost:5001
-    container_name: lab04-frontend
+    container_name: lab05-frontend
     ports:
       - "3000:80"
     depends_on:

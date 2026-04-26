@@ -1,29 +1,62 @@
 const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
-/**
- * Fetch all available operations from the backend.
- * @returns {Promise<Array>} List of operation descriptors
- */
 export async function fetchOperations() {
-  const response = await fetch(`${API_BASE}/api/operations`);
-  if (!response.ok) throw new Error("Error al cargar las operaciones");
-  const data = await response.json();
-  return data.operations;
+  const res = await fetch(`${API_BASE}/api/operations`);
+  if (!res.ok) throw new Error("Error al cargar las operaciones");
+  return (await res.json()).operations;
 }
 
-/**
- * Execute a specific operation with the given inputs.
- * @param {string} operationId - The operation identifier
- * @param {Object} inputs - Key-value map of input names to values
- * @returns {Promise<Object>} Result object { operation, inputs, result }
- */
 export async function runOperation(operationId, inputs) {
-  const response = await fetch(`${API_BASE}/api/run/${operationId}`, {
+  const res = await fetch(`${API_BASE}/api/run/${operationId}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(inputs),
   });
-  const data = await response.json();
-  if (!response.ok) throw new Error(data.error || "Error al ejecutar la operación");
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Error al ejecutar la operación");
+  return data;
+}
+
+export async function runImageOperation(operationId, imageFile, params = {}) {
+  const formData = new FormData();
+  formData.append("image", imageFile);
+  Object.entries(params).forEach(([k, v]) => formData.append(k, v));
+  const res = await fetch(`${API_BASE}/api/run-image/${operationId}`, {
+    method: "POST",
+    body: formData,
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Error al procesar la imagen");
+  return data;
+}
+
+export function getResultImageUrl(jobId) {
+  return `${API_BASE}/api/result/${jobId}`;
+}
+
+/**
+ * Register a new service by uploading a .cpp file + metadata.
+ * @param {File}   cppFile
+ * @param {Object} meta  { name, description, category, service_type, parallel_type, inputs }
+ */
+export async function registerService(cppFile, meta) {
+  const formData = new FormData();
+  formData.append("file", cppFile);
+  formData.append("meta", JSON.stringify(meta));
+  const res = await fetch(`${API_BASE}/api/register`, {
+    method: "POST",
+    body: formData,
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Error al registrar el servicio");
+  return data; // { ok, descriptor }
+}
+
+export async function deleteOperation(operationId) {
+  const res = await fetch(`${API_BASE}/api/operations/${operationId}`, {
+    method: "DELETE",
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Error al eliminar la operación");
   return data;
 }
