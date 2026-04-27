@@ -24,6 +24,11 @@ RUN find binaries/ -name "*.cpp" | while read src; do \
       g++ -O2 -o "$out" "$src"; \
     done
 
+# Ensure runtime directories exist
+RUN mkdir -p image_binaries uploads outputs
+
+# Image binaries are compiled dynamically at runtime via /api/register
+
 EXPOSE 5000
 
 CMD ["python", "app.py"]

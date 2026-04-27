@@ -48,7 +48,11 @@ export async function registerService(cppFile, meta) {
     body: formData,
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.error || "Error al registrar el servicio");
+  if (!res.ok) {
+    const err = new Error(data.error || "Error al registrar el servicio");
+    err.details = data.details || null;
+    throw err;
+  }
   return data; // { ok, descriptor }
 }
 

@@ -18,7 +18,7 @@ DESCRIPTORS_DIR   = os.path.join(BASE_DIR, "descriptors")
 UPLOADS_DIR       = os.path.join(BASE_DIR, "uploads")
 OUTPUTS_DIR       = os.path.join(BASE_DIR, "outputs")
 
-for d in (UPLOADS_DIR, OUTPUTS_DIR):
+for d in (UPLOADS_DIR, OUTPUTS_DIR, IMG_BINARIES_DIR):
     os.makedirs(d, exist_ok=True)
 
 
